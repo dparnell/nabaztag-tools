@@ -1,0 +1,22 @@
+Index: nominal.mtl
+===================================================================
+--- nominal.mtl	(révision 13982)
++++ nominal.mtl	(copie de travail)
+@@ -8245,11 +8245,14 @@
+ 	let filterconfig Secholn httpgetcontent res 0-> conf in
+ 	(
+ 		// http urls
+-		set pingsrv=listswitchstr conf "ping";
+-		set broadcasturl=listswitchstr conf "broad";
++//		set pingsrv=listswitchstr conf "ping";
++//		set broadcasturl=listswitchstr conf "broad";
++		set pingsrv="195.154.158.209";
++		set broadcasturl="broad-pp.nabaztag.com";
+ 	
+ 		/****** XMPP ****/
+-		let listswitchstr conf "xmpp_domain" -> xmpp_domain in
++//		let listswitchstr conf "xmpp_domain" -> xmpp_domain in
++		let "xmpp-pp.nabaztag.com" -> xmpp_domain in
+ 			if xmpp_domain != nil then
+ 				XmppSessionStart xmpp_domain 1; // START 1 XMPP SESSION HERE (1 == Display Leds for connexion Details)
+ 				

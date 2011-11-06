@@ -1,0 +1,14 @@
+Index: nominal.mtl
+===================================================================
+--- nominal.mtl	(révision 17625)
++++ nominal.mtl	(copie de travail)
+@@ -8443,7 +8443,8 @@
+ 		
+ fun _configcbhttp http res=
+ 	Secholn "config=";
+-	let filterconfig Secholn httpgetcontent res 0-> conf in
++//	let filterconfig Secholn httpgetcontent res 0-> conf in
++	let ( [ "ping" "tagtag.nabaztag.objects.violet.net" ] :: [ "broad" "broad.violet.net" ] :: [ "xmpp_domain" "xmpp.nabaztag.com" ] :: nil ) -> conf in
+ 	(
+ 		// http urls
+ 		set pingsrv=listswitchstr conf "ping";
