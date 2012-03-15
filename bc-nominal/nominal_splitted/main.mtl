@@ -5,6 +5,7 @@ proto main 0;;
 proto setRunState 1;;
 proto getRunState 0;;
 proto evalTrame 1;;
+proto endSleep 0;;
 
 // XMPP ECHO DEBUG
 fun Xw str = 
@@ -384,6 +385,7 @@ fun _configcbhttp http res=
 			set broadcasturl=listswitchstr conf "broad";
 
 #ifdef PING
+			endSleep;
 			if pingsrv!=nil && broadcasturl!=nil then set run=pingstartRun;
 #else
 		/****** XMPP ****/
@@ -1697,7 +1699,11 @@ fun evalTrame ping_trame=
 			(
 				let (if code == 3 then (
 					// ping delay
+#ifdef PING
+					set pingdelay = strget val 0;
+#else
 					Secholn "dropping ping delay";
+#endif
 					nil
 				) else if code == 4 then (
 					// update sources, messages number and ears
