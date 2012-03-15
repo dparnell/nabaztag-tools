@@ -10,7 +10,7 @@
 
 proto main 0;;
 
-//var SIMU;;
+var SIMU;;
 var NOMINAL;;
 
 var AUDIOLIB;;
