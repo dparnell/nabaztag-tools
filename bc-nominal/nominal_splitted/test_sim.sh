@@ -9,4 +9,4 @@ COMPILER="$CURRENTDIR/../../compiler/mtl_simu"
 
 [ $? -eq 0 ] || { echo "Could not make nominal.mtl" ;  }
 
-"$COMPILER" --source "../nominal.mtl"
+"$COMPILER" --mac 0123456789ab --source "../nominal.mtl"
