@@ -1871,7 +1871,10 @@ fun runIdle=
 		if dotaichinow then (
 			taichistart;
 			0
-		)
+		) else (
+		       runpingstart;
+		       0
+		)		
 	);
 	0
 ;;
