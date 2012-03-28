@@ -17,6 +17,14 @@ extern "C" {
 #include"properties.h"
 #include "log.h"
 
+#ifdef USE_GLUT
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#endif
+
 int simuInit();
 
 // fonction à appeler régulièrement, pour traiter les messages de la fenêtre du simulateur
@@ -92,6 +100,13 @@ int vcompDoit(char *starter);
 
 extern unsigned char dumpbc[];
 
+void idle() {
+	simuDoLoop();
+	VPUSH(VCALLSTACKGET(sys_start,SYS_CBLOOP));
+	if (VSTACKGET(0)!=NIL) interpGo();
+	VPULL();
+}
+
 int main(int argc,char **argv)
 {
 	PropLoad("config.txt");
@@ -118,21 +133,35 @@ int main(int argc,char **argv)
 		vmemDumpShort();
 		getchar();
 
+#ifdef USE_GLUT
+		glutInit(&argc, argv);
+		glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+		
+		glutInitWindowSize(800, 800);
 
+		glutCreateWindow("Nabaztag");		
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LESS);
+		glShadeModel(GL_SMOOTH);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_COLOR_MATERIAL);
+#endif
 		simuInit();
 
 		VPUSH(INTTOVAL(0));
 		interpGo();
 		VPULL();
+#ifdef USE_GLUT
+		glutIdleFunc(idle);
+
+		glutMainLoop();
+#else
 		while(1)
 		{
-			simuDoLoop();
-			VPUSH(VCALLSTACKGET(sys_start,SYS_CBLOOP));
-			if (VSTACKGET(0)!=NIL) interpGo();
-			VPULL();
-
+			idle();
 			usleep(50 * 1000);
 		}
+#endif
 		getchar();
 	}
 	return 0;

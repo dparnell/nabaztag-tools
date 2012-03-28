@@ -1,3 +1,11 @@
+#ifdef USE_GLUT
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#else
+#include <GL/glut.h>
+#endif
+#endif
+
 #define PROTORABBIT
 //#define PROTODAL
 
@@ -149,6 +157,93 @@ int simuDisplay(int* intensity)
 	return 0;
 }
 
+#ifdef USE_GLUT
+void reshape(int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+static float white_color[4] = { 1.0, 1.0, 1.0, 1.0 };
+static float no_color[4] = { 0.0, 0.0, 0.0, 0.0 };
+
+void display(void)
+{
+	float led_color[4] = { 0.0, 0.0, 0.0, 0.7 };
+	
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
+	glPushMatrix();
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, white_color);
+	glMaterialfv(GL_FRONT, GL_EMISSION, white_color);
+	glColor4fv(white_color);	
+	
+	// draw the head
+	glTranslatef(0, .25, 0);
+	glutSolidSphere(0.25, 50, 50);
+	// draw the body
+	glTranslatef(0, -0.5, 0);
+	glRotatef(-90, 1, 0, 0);
+	gluCylinder(gluNewQuadric(), .375, .25, .5, 50, 50);	
+		
+	glPopMatrix();
+	
+	// now let's draw some LEDS
+	
+	glPushMatrix();
+		// the base
+		glTranslatef(0, -0.35, 0);
+		glRotatef(-90, 1, 0, 0);
+		led_color[0] = diodeval[12] / 255.0f;
+		led_color[1] = diodeval[13] / 255.0f;
+		led_color[2] = diodeval[14] / 255.0f;
+		glMaterialfv(GL_FRONT, GL_EMISSION, led_color);
+		gluCylinder(gluNewQuadric(), .25, .375, .1, 50, 50);
+	glPopMatrix();
+	
+	glPushMatrix();
+		// the nose
+		glTranslatef(0, .25, -0.25);
+		led_color[0] = diodeval[0] / 255.0f;
+		led_color[1] = diodeval[1] / 255.0f;
+		led_color[2] = diodeval[2] / 255.0f;
+		glMaterialfv(GL_FRONT, GL_EMISSION, led_color);
+		glutSolidSphere(0.05, 50, 50);	
+	glPopMatrix();
+
+	glPushMatrix();
+		// the left led
+		glTranslatef(-0.25, -0.125, -0.25);
+		led_color[0] = diodeval[3] / 255.0f;
+		led_color[1] = diodeval[4] / 255.0f;
+		led_color[2] = diodeval[5] / 255.0f;
+		glMaterialfv(GL_FRONT, GL_EMISSION, led_color);
+		glutSolidSphere(0.05, 50, 50);	
+	glPopMatrix();
+
+	glPushMatrix();
+		// the middle led
+		glTranslatef(0, -0.125, -0.375);
+		led_color[0] = diodeval[6] / 255.0f;
+		led_color[1] = diodeval[7] / 255.0f;
+		led_color[2] = diodeval[8] / 255.0f;
+		glMaterialfv(GL_FRONT, GL_EMISSION, led_color);
+		glutSolidSphere(0.05, 50, 50);	
+	glPopMatrix();
+
+	glPushMatrix();
+		// the right led
+		glTranslatef(0.25, -0.125, -0.25);
+		led_color[0] = diodeval[9] / 255.0f;
+		led_color[1] = diodeval[10] / 255.0f;
+		led_color[2] = diodeval[11] / 255.0f;
+		glMaterialfv(GL_FRONT, GL_EMISSION, led_color);
+		glutSolidSphere(0.05, 50, 50);	
+	glPopMatrix();
+
+	
+	glutSwapBuffers();
+}
+#endif
 
 // initialisation du simulateur
 vsd simuInit()
@@ -174,6 +269,11 @@ vsd simuInit()
 //	setButton(1);
 	simuaudioinit();
 	simunetinit();
+	
+#ifdef USE_GLUT
+	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
+#endif
 	return 0;
 }
 
@@ -228,6 +328,10 @@ void simuSetLed(int i,int val)
 			my_printf(LOG_SIMULEDS, " [%3d %3d %3d]", diodeval[3*i], diodeval[3*i+1], diodeval[3*i+2]);
 		}
 	my_printf(LOG_SIMULEDS, "\n");
+	
+#ifdef USE_GLUT
+	glutPostRedisplay();
+#endif	
 }
 
 #ifdef VL_MOTORS

@@ -6,8 +6,8 @@ COMP_OBJS=main_compiler.o
 SIMU_SRC=main_simu.c linux_simu.c linux_simuaudio.c linux_simunet.c vmem.c vloader.c vlog.c vinterp.c vaudio.c vnet.c
 SIMU_OBJS=$(SIMU_SRC:.c=.o)
 
-CXXFLAGS=-DVSIMU -g3 -m32
-CFLAGS=-m32 -DVSIMU -g3  # -std=c99 
+CXXFLAGS=-DVSIMU -g3 -m32 -DUSE_GLUT
+CFLAGS=-m32 -DVSIMU -g3 -DUSE_GLUT -std=c99 
 
 CC=gcc
 CXX=g++
@@ -24,7 +24,7 @@ mtl_comp : vcomp/libvcomp.a $(COMMON_OBJS) $(COMP_OBJS)
 #	g++  $^ -o $@ vcomp/*.o
 
 mtl_simu : vcomp/libvcomp.a $(COMMON_OBJS) $(SIMU_OBJS)
-	g++  -m32 $^ -o $@ vcomp/libvcomp.a
+	g++  -m32 $^ -o $@ vcomp/libvcomp.a -framework GLUT -framework OpenGL
 #	g++  $^ -o $@ vcomp/*.o
 
 # .c.o:	
