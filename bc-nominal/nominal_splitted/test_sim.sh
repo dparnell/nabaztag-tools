@@ -5,7 +5,8 @@ cd $CURRENTDIR
 
 COMPILER="$CURRENTDIR/../../compiler/mtl_simu"
 
-./make_nominal.sh
+# compile the source for the simulator
+./make_nominal.sh -D SIMU
 
 [ $? -eq 0 ] || { echo "Could not make nominal.mtl" ;  }
 

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-(@ARGV <= 1) || die "Need only one argument (filename), or data on stdin" ;
+use strict;
 
 my %defines;
 my %includedFiles;
@@ -91,13 +91,28 @@ sub processThisFile
 # process main file
 my $mainFileHandle;
 my $filename;
-if (@ARGV == 1) {
-		$filename = $ARGV[0];
+my $state;
+my $arg;
+
+$filename = "STDIN";
+$mainFileHandle = *STDIN ;
+
+$state = 0;
+foreach $arg (@ARGV) {
+	if($arg eq "-D") {
+		$state = 1;
+	} else {
+		if($state == 1) {
+			$state = 0;
+			$defines{$arg} = 1;
+		} else {
+			$filename = $arg;
+		}
+	}
+}
+unless ($filename eq "STDIN") {
 		open($mainFileHandle, $filename);
 		$includedFiles{$filename} = 1;
-} else {
-		$filename = "STDIN";
-		$mainFileHandle = STDIN ;
 }
 
 processThisFile($mainFileHandle, $filename);

@@ -25,7 +25,7 @@ fun Progw str = nil;; //Secholn strcatlist "[program] " :: str :: nil;;
 // streaming debug
 fun Streamw str = nil;; //Secholn strcatlist "[streaming] " :: str :: nil;;
 
-#define SIMU
+// #define SIMU
 #define PING
 #define NOMINAL
 
