@@ -164,6 +164,7 @@ void reshape(int width, int height)
 }
 
 static float white_color[4] = { 1.0, 1.0, 1.0, 1.0 };
+static float red_color[4] = { 1.0, 0.0, 0.0, 1.0 };
 static float no_color[4] = { 0.0, 0.0, 0.0, 0.0 };
 
 void display(void)
@@ -172,20 +173,44 @@ void display(void)
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	glPushMatrix();
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, white_color);
-	glMaterialfv(GL_FRONT, GL_EMISSION, white_color);
-	glColor4fv(white_color);	
+//	glRotatef(0.1, 0, 1, 0);
 	
-	// draw the head
-	glTranslatef(0, .25, 0);
-	glutSolidSphere(0.25, 50, 50);
-	// draw the body
-	glTranslatef(0, -0.5, 0);
-	glRotatef(-90, 1, 0, 0);
-	gluCylinder(gluNewQuadric(), .375, .25, .5, 50, 50);	
-		
+	glPushMatrix();
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, white_color);
+		glMaterialfv(GL_FRONT, GL_EMISSION, white_color);
+		glColor4fv(white_color);	
+	
+		// draw the head
+		glTranslatef(0, .25, 0);
+		glutSolidSphere(0.25, 50, 50);
+		// draw the body
+		glTranslatef(0, -0.5, 0);
+		glRotatef(-90, 1, 0, 0);
+		gluCylinder(gluNewQuadric(), .375, .25, .5, 50, 50);
 	glPopMatrix();
+	
+	// draw the left ear
+	glPushMatrix();
+		glTranslatef(0, .25, 0);	
+		glRotatef(-90, 1, 0, 0);
+		glTranslatef(.22, 0, 0);
+		glRotatef(15, 0, 1, 0);
+		glRotatef(motorval[0]*3.6, 1, 0, 1);
+		glMaterialfv(GL_FRONT, GL_EMISSION, red_color);
+		gluCylinder(gluNewQuadric(), .05, .05, .5, 50, 50);
+	glPopMatrix();
+
+	// draw the right ear
+	glPushMatrix();
+		glTranslatef(0, .25, 0);	
+		glRotatef(-90, 1, 0, 0);
+		glTranslatef(-.22, 0, 0);
+		glRotatef(-15, 0, 1, 0);
+		glRotatef(motorval[1]*3.6, -1, 0, 1);
+		glMaterialfv(GL_FRONT, GL_EMISSION, red_color);
+		gluCylinder(gluNewQuadric(), .05, .05, .5, 50, 50);
+	glPopMatrix();
+	
 	
 	// now let's draw some LEDS
 	
@@ -239,7 +264,6 @@ void display(void)
 		glMaterialfv(GL_FRONT, GL_EMISSION, led_color);
 		glutSolidSphere(0.05, 50, 50);	
 	glPopMatrix();
-
 	
 	glutSwapBuffers();
 }
