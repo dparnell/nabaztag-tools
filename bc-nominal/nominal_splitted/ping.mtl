@@ -14,6 +14,11 @@ fun _pingcbhttp http res=
 	0;;
 
 fun runpingstart=
+	if gEarInited != 1 then (
+		set gEarInited = 1;
+		earInit						// we init the ears
+	);
+
 //	if (gInteractiveApp == nil) then
 	if netState==RT2501_S_CONNECTED then
 		set run=pingwaitRun httprequest "GET" Secholn pingurl nil #_pingcbhttp HTTP_NORMAL;
