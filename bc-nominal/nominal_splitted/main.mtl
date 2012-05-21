@@ -2074,6 +2074,7 @@ fun controlprogramwait =
 
 fun dumpStatus=
 	Secholn "//--- status ---";
+	Secho "earsmode="; Iecholn earsmode;
 	Secho "earDetecting="; Iecholn earDetecting;
 	Secho "gSleepState="; Iecholn gSleepState;
 	Secho "gStreamingState="; Iecholn gStreamingState;

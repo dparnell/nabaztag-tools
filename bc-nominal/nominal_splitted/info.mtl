@@ -276,15 +276,16 @@ fun newInfoUpdate data=
 		);
 		// process ears
 		Secho "newleft="; Iecho newleft; Secho "newright="; Iecho newright; Secho "extleft="; Iecho extleft; Secho "extright="; Iecho extright;
-		Secho "gSleepState="; Iecho gSleepState; Secho "earResetting="; Iecho earResetting;  
+		Secho "gSleepState="; Iecho gSleepState; Secho "earResetting="; Iecho earResetting; 
 		if (newleft != nil || newright != nil) && ((newleft!=extleft) || (newright!=extright)) then (
 			set extleft=newleft;
 			set extright=newright;
 			if ((!gSleepState) && (!earResetting)) then (
-				controlsound midi_communion;
+//				controlsound midi_communion;
 				earsGoToRefPos
 			)
 		)
 	);
+	Secholn "";
 	dumpinfo
 	;;

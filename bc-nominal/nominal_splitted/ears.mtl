@@ -33,7 +33,8 @@ const EARS_TIMEOUT=2000;; // delay (in ms) to wait when detecting ear movement (
 const EARS_OFFZERO=2;; // "offset" between hardware position zero (where there is a missing hole) and "real" position zero (ears pointing to the sky)
 
 // ears echo debug
-fun Earsw str = nil;; // Secholn strcatlist "[ears] " :: str :: nil;;
+fun Earsw str = nil;;
+//fun Earsw str = Secholn strcatlist "[ears] " :: str :: nil;;
 
 /**
  - numE: the ear number, 0 for right, 1 for left.
@@ -237,7 +238,7 @@ fun earResetRun=
 			)
 			else
 			(
-				//Secho "position "; Iecho e.lvalE; Secho " : "; Iecho v; Secho " during "; Iecholn d;
+				// Secho "position "; Iecho e.lvalE; Secho " : "; Iecho v; Secho " during "; Iecholn d;
 				set e.ltimeE=t
 			);
 			set e.lvalE=v;
