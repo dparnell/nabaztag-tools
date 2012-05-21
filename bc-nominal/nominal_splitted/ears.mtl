@@ -33,8 +33,8 @@ const EARS_TIMEOUT=2000;; // delay (in ms) to wait when detecting ear movement (
 const EARS_OFFZERO=2;; // "offset" between hardware position zero (where there is a missing hole) and "real" position zero (ears pointing to the sky)
 
 // ears echo debug
-fun Earsw str = nil;;
-//fun Earsw str = Secholn strcatlist "[ears] " :: str :: nil;;
+//fun Earsw str = nil;;
+fun Earsw str = Secholn strcatlist "[ears] " :: str :: nil;;
 
 /**
  - numE: the ear number, 0 for right, 1 for left.
@@ -125,8 +125,9 @@ fun earStartReset=
 fun earInit =
 	set ears=tabnew nil 2;
 	for i=0;i<2 do set ears.i=[numE:i];
-	earStartReset;
-	set earsInited = 1
+	set earsInited = 1;
+	set earsmode = -1;
+	earStartReset
 	;;
 
 fun earStartDetect=
@@ -188,7 +189,7 @@ fun earDetectRun=
 	);;
 		
 fun earResetRun=
-	Earsw "earResetRun";
+//	Earsw "earResetRun";
 	for i=0;i<2 do let ears.i -> e in
 	if e.dirE then
 	(
@@ -291,7 +292,7 @@ fun earWaitRun=
 // boucle pour faire tourner les oreilles vers leur targetobjectif
 fun earRun=
 	if (earsInited) then (
-		Earsw strcatlist ("earRun " :: (itoa earsmode) :: nil);
+//		Earsw strcatlist ("earRun " :: (itoa earsmode) :: nil);
 		if earsmode==EARSMODE_RESET then earResetRun
 		else if earsmode==EARSMODE_DETECT then earDetectRun
 		else earWaitRun
@@ -320,7 +321,7 @@ fun earTarget i= ears.(i).targetE + ears.(i).targetLoopE*EARS_HOLES;; // v16
 // p = int quelconque, même > 17
 // d==0 : vers l'avant, d!=0 : vers l'arrière
 fun earGo i p d=
-	if (earsInited) then
+//	if (earsInited) then
 	if earsmode==EARSMODE_WAIT ||earsmode==EARSMODE_WAITANDDETECT then
 	let ears.i->e in
 	let (if d then -1 else 1) -> dir in // v16
