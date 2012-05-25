@@ -65,7 +65,7 @@ void simuSetMotor(vub i,vub val){}
 #define NBHOLES 20
 #define MASKEDHOLES 3
 // MAXMOTORVAL doit être inférieur à 256
-#define MOTORSCALE 4
+#define MOTORSCALE 5
 #define MAXMOTORVAL 100
 
 int motorwheel[256];
