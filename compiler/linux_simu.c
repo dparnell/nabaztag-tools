@@ -65,6 +65,7 @@ void simuSetMotor(vub i,vub val){}
 #define NBHOLES 20
 #define MASKEDHOLES 3
 // MAXMOTORVAL doit être inférieur à 256
+#define MOTORSCALE 4
 #define MAXMOTORVAL 100
 
 int motorwheel[256];
@@ -171,6 +172,7 @@ void display(void)
 {
 	float led_color[4] = { 0.0, 0.0, 0.0, 0.7 };
 	
+	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 //	glRotatef(0.1, 0, 1, 0);
@@ -195,7 +197,7 @@ void display(void)
 		glRotatef(-90, 1, 0, 0);
 		glTranslatef(.22, 0, 0);
 		glRotatef(15, 0, 1, 0);
-		glRotatef(motorval[0]*3.6, 1, 0, 1);
+		glRotatef((motorval[0]>>MOTORSCALE)*3.6, 1, 0, 1);
 		glMaterialfv(GL_FRONT, GL_EMISSION, red_color);
 		gluCylinder(gluNewQuadric(), .05, .05, .5, 50, 50);
 	glPopMatrix();
@@ -206,7 +208,7 @@ void display(void)
 		glRotatef(-90, 1, 0, 0);
 		glTranslatef(-.22, 0, 0);
 		glRotatef(-15, 0, 1, 0);
-		glRotatef(motorval[1]*3.6, -1, 0, 1);
+		glRotatef((motorval[1]>>MOTORSCALE)*3.6, -1, 0, 1);
 		glMaterialfv(GL_FRONT, GL_EMISSION, red_color);
 		gluCylinder(gluNewQuadric(), .05, .05, .5, 50, 50);
 	glPopMatrix();
@@ -280,7 +282,7 @@ vsd simuInit()
 #ifdef VL_MOTORS
 	for(i=0;i<NBMOTOR;i++)
 	{
-		motorval[i]=60;//(rand()&255)*MAXMOTORVAL/256;
+		motorval[i]=60<<MOTORSCALE;
 		motorcount[i]=motordir[i]=0; 
 	}
 	for(i=0;i<256;i++) motorwheel[i]=0;
@@ -315,10 +317,10 @@ vsd simuDoLoop()
 #ifdef VL_MOTORS
 	for(i=0;i<NBMOTOR;i++)
 	{
-		last=motorwheel[motorval[i]];
+		last=motorwheel[motorval[i]>>MOTORSCALE];
 		if (1) motorval[i]+=motordir[i];
-		if (motorval[i]<0) motorval[i]+=MAXMOTORVAL;
-		if (motorval[i]>=MAXMOTORVAL) motorval[i]-=MAXMOTORVAL;
+		if (motorval[i]<0) motorval[i]+=(MAXMOTORVAL<<MOTORSCALE);
+		if (motorval[i]>=(MAXMOTORVAL<<MOTORSCALE)) motorval[i]-=(MAXMOTORVAL<<MOTORSCALE);
 		if (last<motorwheel[motorval[i]]) motorcount[i]++;
 	}
 #endif

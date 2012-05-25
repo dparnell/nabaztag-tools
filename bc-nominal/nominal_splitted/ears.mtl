@@ -61,7 +61,9 @@ var earevent;;
 
 // position désirées des oreilles
 var extleft;;
+var dirleft = 0 ;;
 var extright;;
+var dirright = 1 ;;
 
 fun eargetevent=
 	let earevent -> ev in
@@ -356,8 +358,8 @@ fun earGo i p d=
 fun earsGoToRefPos=
 	Earsw "earsGoToRefPos";
 	if (extleft != nil || extright != nil) then (
-		earGo 0 extleft 0;
-		earGo 1 extright 0;
+		earGo 0 extleft dirleft;
+		earGo 1 extright dirright;
 		set extleft = set extright = nil
 	) else (
 		earGo 0 0 0;
