@@ -100,7 +100,11 @@ int vcompDoit(char *starter);
 
 extern unsigned char dumpbc[];
 
-void idle() {
+void idle(int dummy) {
+#ifdef USE_GLUT
+	glutTimerFunc(50, idle, 0);
+#endif
+	
 	simuDoLoop();
 	VPUSH(VCALLSTACKGET(sys_start,SYS_CBLOOP));
 	if (VSTACKGET(0)!=NIL) interpGo();
@@ -152,13 +156,13 @@ int main(int argc,char **argv)
 		interpGo();
 		VPULL();
 #ifdef USE_GLUT
-		glutIdleFunc(idle);
-
+//		glutIdleFunc(idle);
+		glutTimerFunc(50, idle, 0);
 		glutMainLoop();
 #else
 		while(1)
 		{
-			idle();
+			idle(0);
 			usleep(50 * 1000);
 		}
 #endif
